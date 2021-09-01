@@ -1,0 +1,7 @@
+<div class="container d-flex flex-wrap  justify-content-center mt-3">
+    <div *ngFor="let card of allImages" class="card">
+        <img [src]="card.isRevealed? card.imgPath :'/assets/images/background.jpg'" (click)="pickCard(card)">
+    </div>
+
+    <!-- <img [src]="card.imgPath"> -->
+</div>

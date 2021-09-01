@@ -1,0 +1,14 @@
+img {
+    width: 230px;
+    height: auto;
+    
+    cursor: pointer;
+}
+
+.card {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    background-color: white;
+}
