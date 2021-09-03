@@ -1,3 +1,4 @@
+import { ThrowStmt } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import Card from 'src/app/models/card';
 
@@ -8,22 +9,21 @@ import Card from 'src/app/models/card';
 })
 export class MemoryGameComponent implements OnInit {
   backgroundCards = Array(12);
-
-
   firstImages: Array<Card> = [];
   paths: Array<string> = ["/assets/images/discord.png", "/assets/images/apple.png", "/assets/images/skype.png", "/assets/images/twitter.png", "/assets/images/instagram.png", "/assets/images/facebook.png"]
   allImages: Array<Card> = [];
+
+  twoImages: Array<Card> = [];
+  counter: number = 0;
+  guessedCards: number = 0;
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.paths)
-
     for (let i = 0; i < this.paths.length; i++) {
       let card = new Card();
       card.imgPath = this.paths[i];
       card.id = i;
       this.firstImages.push(card);
-      console.log(this.firstImages)
     }
 
     for (let i = 0; i < this.firstImages.length; i++) {
@@ -35,8 +35,34 @@ export class MemoryGameComponent implements OnInit {
   }
 
   pickCard(card: Card) {
-    console.log(card.imgPath);
-    card.isRevealed = true;
+    if(this.twoImages.length <2) {
+      card.isRevealed = !card.isRevealed;   
+      this.twoImages.push(card);
+  
+      if (this.twoImages.length == 2) {
+        setTimeout(() => {
+        this.twoImages.forEach(img => {
+            img.isRevealed = false;
+        })
+        if(this.allImages.indexOf(this.twoImages[0]) != this.allImages.indexOf(this.twoImages[1]) && this.twoImages[0].id == this.twoImages[1].id) {  
+          this.twoImages[0].isGuessed = true;
+          this.twoImages[1].isGuessed = true;
+          
+          this.guessedCards += 2;
+          console.log(this.guessedCards);
+
+          if (this.guessedCards == this.allImages.length)
+          {
+            alert("you won");
+          }
+        }
+        if(this.allImages.indexOf(this.twoImages[0]) != this.allImages.indexOf(this.twoImages[1])) {
+          this.counter++;
+        }
+        this.twoImages = [];
+        },500)
+      }
+    }
   }
   shuffle(array: any) {
     var currentIndex = array.length, randomIndex;

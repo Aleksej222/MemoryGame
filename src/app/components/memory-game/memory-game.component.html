@@ -1,7 +1,10 @@
-<div class="container d-flex flex-wrap  justify-content-center mt-3">
+<div class="text-center mt-3 d-flex justify-content-center align-items-center">
+    <h4>Broj pokusaja: {{counter}}</h4>
+    <mat-icon onclick="window.location.reload()" style="cursor: pointer;" class="icon" matTooltip="Reload game">refresh</mat-icon>
+</div>
+<div class="container d-flex flex-wrap justify-content-center mt-3">
+  
     <div *ngFor="let card of allImages" class="card">
-        <img [src]="card.isRevealed? card.imgPath :'/assets/images/background.jpg'" (click)="pickCard(card)">
+        <img [src]="card.isRevealed || card.isGuessed? card.imgPath :'/assets/images/background.jpg'" (click)="pickCard(card)">
     </div>
-
-    <!-- <img [src]="card.imgPath"> -->
 </div>
