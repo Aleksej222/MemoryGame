@@ -16,6 +16,7 @@ export class MemoryGameComponent implements OnInit {
   twoImages: Array<Card> = [];
   counter: number = 0;
   guessedCards: number = 0;
+  lives: number = 8;
   constructor() { }
 
   ngOnInit(): void {
@@ -35,34 +36,43 @@ export class MemoryGameComponent implements OnInit {
   }
 
   pickCard(card: Card) {
-    if(this.twoImages.length <2) {
-      card.isRevealed = !card.isRevealed;   
-      this.twoImages.push(card);
+   
+      if(this.twoImages.length <2 && this.lives > 0) {
+        card.isRevealed = !card.isRevealed;   
+        this.twoImages.push(card);
+    
+        if (this.twoImages.length == 2) {
+          setTimeout(() => {
+          this.twoImages.forEach(img => {
+              img.isRevealed = false;
+          })
+          if(this.allImages.indexOf(this.twoImages[0]) != this.allImages.indexOf(this.twoImages[1]) && this.twoImages[0].id == this.twoImages[1].id) {  
+            this.twoImages[0].isGuessed = true;
+            this.twoImages[1].isGuessed = true;
+            
+            this.guessedCards += 2;
+            console.log(this.guessedCards);
   
-      if (this.twoImages.length == 2) {
-        setTimeout(() => {
-        this.twoImages.forEach(img => {
-            img.isRevealed = false;
-        })
-        if(this.allImages.indexOf(this.twoImages[0]) != this.allImages.indexOf(this.twoImages[1]) && this.twoImages[0].id == this.twoImages[1].id) {  
-          this.twoImages[0].isGuessed = true;
-          this.twoImages[1].isGuessed = true;
-          
-          this.guessedCards += 2;
-          console.log(this.guessedCards);
-
-          if (this.guessedCards == this.allImages.length)
-          {
-            alert("you won");
+            if (this.guessedCards == this.allImages.length)
+            {
+              alert("you won");
+            }
           }
+          else {
+            this.lives--;
+            if (this.lives == 0)
+            {
+              alert("you lost");
+            }
+          }
+          if(this.allImages.indexOf(this.twoImages[0]) != this.allImages.indexOf(this.twoImages[1])) {
+            this.counter++;
+          }
+          this.twoImages = [];
+          },500)
         }
-        if(this.allImages.indexOf(this.twoImages[0]) != this.allImages.indexOf(this.twoImages[1])) {
-          this.counter++;
-        }
-        this.twoImages = [];
-        },500)
       }
-    }
+    
   }
   shuffle(array: any) {
     var currentIndex = array.length, randomIndex;
